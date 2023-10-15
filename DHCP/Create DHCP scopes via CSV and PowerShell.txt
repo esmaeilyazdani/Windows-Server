@@ -4,7 +4,7 @@ A fast way to import multiple DHCP scopes to a DHCP server. Some settings need t
 Required header in CSV:
 name;description;startrange;endrange;subnetmask;scopeid;router
 
-#################################### ESCO #####################################
+##################################################################
 
 $dhcpserver = "192.168.20.10"
 $scopes = Import-Csv -Path "C:\Users\irisa-eyazdani\Desktop\scope.csv" -Delimiter ","
