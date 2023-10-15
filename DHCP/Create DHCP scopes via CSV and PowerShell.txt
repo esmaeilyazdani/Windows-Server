@@ -1,0 +1,21 @@
+A fast way to import multiple DHCP scopes to a DHCP server. Some settings need to be added on top level. For example DNS servers.
+
+
+Required header in CSV:
+name;description;startrange;endrange;subnetmask;scopeid;router
+
+#################################### ESCO #####################################
+
+$dhcpserver = "172.30.10.11"
+$scopes = Import-Csv -Path "C:\Users\irisa-eyazdani\Desktop\scope.csv" -Delimiter ","
+foreach ($scope in $scopes)
+{
+	$name = $scope.name
+	$description = $scope.description
+Write-Output "Creating scope  $name"
+Add-DhcpServerv4Scope -ComputerName $dhcpserver -Name "$name" -Description "$description" -StartRange $scope.startrange -EndRange $scope.endrange -SubnetMask $scope.subnetmask -State Active -LeaseDuration 30.00:00:00
+Set-DhcpServerv4OptionValue -Router $scope.router -ScopeId $scope.scopeid -ComputerName $dhcpserver
+}
+
+
+
