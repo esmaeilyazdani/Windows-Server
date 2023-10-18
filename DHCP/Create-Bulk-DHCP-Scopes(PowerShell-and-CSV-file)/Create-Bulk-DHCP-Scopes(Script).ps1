@@ -1,12 +1,10 @@
-# Put the files in a desired location and change the path in second line
-
-$dhcpserver = "192.168.30.5"
-$scopes = Import-Csv -Path "D:\Scripts\DHCP_Scopes_Info.csv" -Delimiter ","
-foreach ($scope in $scopes)
+$DHCPServerAddress = "172.50.60.70"
+$ScopesList = Import-Csv -Path "D:\Scripts\DHCP_Scopes_Info.csv" -Delimiter ","
+foreach ($Scope in $ScopesList)
 {
-	$name = $scope.name
-	$description = $scope.description
-Write-Output "Creating Scope  $name"
-Add-DhcpServerv4Scope -ComputerName $dhcpserver -Name "$name" -Description "$description" -StartRange $scope.startrange -EndRange $scope.endrange -SubnetMask $scope.subnetmask -State Active -LeaseDuration 08.00:00:00
-Set-DhcpServerv4OptionValue -Router $scope.router -ScopeId $scope.scopeid -ComputerName $dhcpserver
+	$ScopeName = $Scope.name
+	$ScopeDescription = $Scope.description
+Write-Output "The script is creating scope  $ScopeName"
+Add-DhcpServerv4Scope -ComputerName $DHCPServerAddress -Name "$ScopeName" -Description "$ScopeDescription" -StartRange $Scope.startrange -EndRange $Scope.endrange -SubnetMask $Scope.subnetmask -State Active -LeaseDuration 10.00:00:00
+Set-DhcpServerv4OptionValue -Router $Scope.router -ScopeId $Scope.scopeid -ComputerName $DHCPServerAddress
 }
