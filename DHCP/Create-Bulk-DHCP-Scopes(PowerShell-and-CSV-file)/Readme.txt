@@ -1,8 +1,8 @@
-How to use:
 
-According to Microsoft Learn instruction (which you can see in the following link), we have to provide some information about the scopes.
+According to the Microsoft Learn instructions (which you can find in the following link), we need to provide some information about the scopes.
 
 https://learn.microsoft.com/en-us/powershell/module/dhcpserver/add-dhcpserverv4scope?view=windowsserver2022-ps
+
 
    [-ComputerName <String>]
    [-StartRange] <IPAddress>
@@ -28,10 +28,11 @@ https://learn.microsoft.com/en-us/powershell/module/dhcpserver/add-dhcpserverv4s
    [<CommonParameters>]
 
 
-This information includes DHCP server address, scopes name, start range, end range, description about scope, lease duration in days and etc. You can access the complete list of parameters in above list. 
-Because we're going to create scopes with some default settings, we don't need to provide value for all of the parameters. Therefore we just provide required information includes DHCP server address, start range, end range, scope name, scope description, scope id, subnet mask, lease duration, and state.
+The information includes the DHCP server address, scope name, start range, end range, description about the scope, lease duration in days, and more. You can access the complete list of parameters in the above link. 
 
-You should create a csv file and depend on each column's value, give a name to its headers. I already provided a sample csv file to use in PowerShell script and you can download it from current directory.
+Since we're going to create scopes with some default settings, we don't need to provide values for all of the parameters. Therefore, we just need to provide the required information which includes DHCP server address, start range, end range, scope name, scope description, scope ID, subnet mask, lease duration, and state.
+
+You should create a CSV file and give a name to each column's header. I've already provided a sample CSV file to use in PowerShell script which you can download from the current directory.
 
 
 ######### Script explanation ################
@@ -48,7 +49,7 @@ foreach ($Scope in $ScopesList)
 	$ScopeDescription = $Scope.description
 # If you would like to see a massage while creating each scope, you can use Write-Output switch and enter your desired message
 Write-Output "The script is creating scope  $ScopeName"
-# Here based on the information that are provided in CSV file, scopes will create. We don't need to specify State and LeaseDuration in CSV file and just privide a value in the below line of the script 
+# Here, based on the information that are provided in CSV file, scopes will create. We don't need to specify State and LeaseDuration in CSV file and just privide a value in the below line of the script 
 Add-DhcpServerv4Scope -ComputerName $DHCPServerAddress -Name "$ScopeName" -Description "$ScopeDescription" -StartRange $Scope.startrange -EndRange $Scope.endrange -SubnetMask $Scope.subnetmask -State Active -LeaseDuration 10.00:00:00
 # Finally, the script gets the scope id or scope subnet address and sets default gateway or router address for that network.
 Set-DhcpServerv4OptionValue -Router $Scope.router -ScopeId $Scope.scopeid -ComputerName $DHCPServerAddress
